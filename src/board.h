@@ -9,7 +9,6 @@ class Board
 private:
     std::vector<std::vector<short>> board;
     const short MILL_LINES[16][3][2] = {
-
         // External square
         // Horizontal
         {{0, 0}, {0, 3}, {0, 6}},
@@ -38,8 +37,11 @@ private:
         {{3, 0}, {3, 1}, {3, 2}},
         {{3, 4}, {3, 5}, {3, 6}},
         {{0, 3}, {1, 3}, {2, 3}},
-        {{4, 3}, {5, 3}, {6, 3}}};
+        {{4, 3}, {5, 3}, {6, 3}}
+    };
 
+    void Initialize();
+    
 public:
     Board();
     std::vector<std::vector<short>> getBoard();
@@ -47,6 +49,7 @@ public:
     void removeToken(short row, short column, short playerToken);
     bool moveToken(short currentRow, short currentColumn, short playerToken, MoveOptions option);
     bool isThereMill(short playerToken);
+    void Reset();
 };
 
 enum class MoveOptions

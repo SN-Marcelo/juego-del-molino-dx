@@ -9,20 +9,7 @@ Board::Board()
         2 = player 2 square
     */
     this->board.resize(7, std::vector<short>(7, -1));
-    for (short row = 0; row < 7; row++)
-    {
-        for (short column = 0; column < 7; column++)
-        {
-            if (
-                (row == column && row != 3) ||
-                (row + column == 6 && row != 3) ||
-                (row == 3 && column != 3) ||
-                (row != 3 && column == 3))
-            {
-                this->board[row][column] = 0;
-            }
-        }
-    }
+    Initialize();
 }
 
 std::vector<std::vector<short>> Board::getBoard()
@@ -164,4 +151,27 @@ bool Board::isThereMill(short playerToken)
         }
     }
     return false;
+}
+
+void Board::Initialize()
+{
+    for (short row = 0; row < 7; row++)
+    {
+        for (short column = 0; column < 7; column++)
+        {
+            if (
+                (row == column && row != 3) ||
+                (row + column == 6 && row != 3) ||
+                (row == 3 && column != 3) ||
+                (row != 3 && column == 3))
+            {
+                this->board[row][column] = 0;
+            }
+        }
+    }
+}
+
+void Board::Reset()
+{
+    Initialize();
 }
