@@ -1,5 +1,39 @@
 #include "board.h"
 
+namespace
+{
+    static constexpr short MILL_LINES[16][3][2] = {
+        // External square
+        // Horizontal
+        {{0, 0}, {0, 3}, {0, 6}},
+        {{6, 0}, {6, 3}, {6, 6}},
+        // Vertical
+        {{0, 0}, {3, 0}, {6, 0}},
+        {{0, 6}, {3, 6}, {6, 6}},
+
+        // Middle square
+        // Horizontal
+        {{1, 1}, {1, 3}, {1, 5}},
+        {{5, 1}, {5, 3}, {5, 5}},
+        // Vertical
+        {{1, 1}, {3, 1}, {5, 1}},
+        {{1, 5}, {3, 5}, {5, 5}},
+
+        // Inside square
+        // Horizontal
+        {{2, 2}, {2, 3}, {2, 4}},
+        {{4, 2}, {4, 3}, {4, 4}},
+        // Vertical
+        {{2, 2}, {3, 2}, {4, 2}},
+        {{2, 4}, {3, 4}, {4, 4}},
+
+        // Cross
+        {{3, 0}, {3, 1}, {3, 2}},
+        {{3, 4}, {3, 5}, {3, 6}},
+        {{0, 3}, {1, 3}, {2, 3}},
+        {{4, 3}, {5, 3}, {6, 3}}};
+}
+
 Board::Board()
 {
     /*
@@ -34,23 +68,24 @@ bool Board::moveToken(short currentRow, short currentColumn, short playerToken, 
     if (this->board[currentRow][currentColumn] != playerToken)
         return false;
 
+    short spacesToMove = 1;
+
     switch (option)
     {
     case MoveOptions::UP:
-        if(currentRow == 0)
+        if (currentRow == 0)
             return false;
-        short rowsUp = 1;
-        while(true)
+        while (true)
         {
-            if (this->board[currentRow - rowsUp][currentColumn] == -1)
+            if (this->board[currentRow - spacesToMove][currentColumn] == -1)
             {
-                rowsUp++;
+                spacesToMove++;
                 continue;
             }
-            if (this->board[currentRow - rowsUp][currentColumn] == 0)
+            if (this->board[currentRow - spacesToMove][currentColumn] == 0)
             {
                 this->board[currentRow][currentColumn] = 0;
-                this->board[currentRow - rowsUp][currentColumn] = playerToken;
+                this->board[currentRow - spacesToMove][currentColumn] = playerToken;
                 return true;
             }
             else
@@ -59,20 +94,19 @@ bool Board::moveToken(short currentRow, short currentColumn, short playerToken, 
             }
         }
     case MoveOptions::DOWN:
-        if(currentRow == 6)
+        if (currentRow == 6)
             return false;
-        short rowsDown = 1;
-        while(true)
+        while (true)
         {
-            if (this->board[currentRow + rowsDown][currentColumn] == -1)
+            if (this->board[currentRow + spacesToMove][currentColumn] == -1)
             {
-                rowsDown++;
+                spacesToMove++;
                 continue;
             }
-            if (this->board[currentRow + rowsDown][currentColumn] == 0)
+            if (this->board[currentRow + spacesToMove][currentColumn] == 0)
             {
                 this->board[currentRow][currentColumn] = 0;
-                this->board[currentRow + rowsDown][currentColumn] = playerToken;
+                this->board[currentRow + spacesToMove][currentColumn] = playerToken;
                 return true;
             }
             else
@@ -81,20 +115,19 @@ bool Board::moveToken(short currentRow, short currentColumn, short playerToken, 
             }
         }
     case MoveOptions::LEFT:
-        if(currentColumn == 0)
+        if (currentColumn == 0)
             return false;
-        short columnsLeft = 1;
-        while(true)
+        while (true)
         {
-            if(this->board[currentRow][currentColumn - columnsLeft] == -1)
+            if (this->board[currentRow][currentColumn - spacesToMove] == -1)
             {
-                columnsLeft++;
+                spacesToMove++;
                 continue;
             }
-            if(this->board[currentRow][currentColumn - columnsLeft] == 0)
+            if (this->board[currentRow][currentColumn - spacesToMove] == 0)
             {
                 this->board[currentRow][currentColumn] = 0;
-                this->board[currentRow + rowsDown][currentColumn] = playerToken;
+                this->board[currentRow][currentColumn - spacesToMove] = playerToken;
                 return true;
             }
             else
@@ -103,20 +136,19 @@ bool Board::moveToken(short currentRow, short currentColumn, short playerToken, 
             }
         }
     case MoveOptions::RIGTH:
-        if(currentColumn == 6)
+        if (currentColumn == 6)
             return false;
-        short columnsRight = 1;
-        while(true)
+        while (true)
         {
-            if(this->board[currentRow][currentColumn + columnsRight] == -1)
+            if (this->board[currentRow][currentColumn + spacesToMove] == -1)
             {
-                columnsRight++;
+                spacesToMove++;
                 continue;
             }
-            if(this->board[currentRow][currentColumn + columnsRight] == 0)
+            if (this->board[currentRow][currentColumn + spacesToMove] == 0)
             {
                 this->board[currentRow][currentColumn] = 0;
-                this->board[currentRow + rowsDown][currentColumn] = playerToken;
+                this->board[currentRow][currentColumn + spacesToMove] = playerToken;
                 return true;
             }
             else
