@@ -3,6 +3,8 @@
 #define BOARD_H
 
 #include <vector>
+#include <raylib.h>
+#include "colors.h"
 
 enum class MoveOptions
 {
@@ -15,7 +17,9 @@ enum class MoveOptions
 class Board
 {
 private:
+    short cellSize;
     std::vector<std::vector<short>> board;
+    std::vector<Color> colors;
 
     void Initialize();
     
@@ -26,7 +30,8 @@ public:
     void removeToken(short row, short column, short playerToken);
     bool moveToken(short currentRow, short currentColumn, short playerToken, MoveOptions option);
     bool isThereMill(short playerToken);
-    void Reset();
+    void reset();
+    void drawBoard();
 };
 
 #endif

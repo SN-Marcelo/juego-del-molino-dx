@@ -42,7 +42,8 @@ Board::Board()
         1 = player 1 square
         2 = player 2 square
     */
-    this->board.resize(7, std::vector<short>(7, -1));
+    board.resize(7, std::vector<short>(7, -1));
+    colors = GetCellColors();
     Initialize();
 }
 
@@ -203,7 +204,58 @@ void Board::Initialize()
     }
 }
 
-void Board::Reset()
+void Board::reset()
 {
     Initialize();
+}
+
+void Board::drawBoard()
+{
+    constexpr int offset = 50;
+
+    // Outer square
+    DrawLine(offset, offset, offset + 6 * cellSize, offset, WHITE);
+    DrawLine(offset, offset + 6 * cellSize, offset + 6 * cellSize, offset + 6 * cellSize, WHITE);
+    DrawLine(offset, offset, offset, offset + 6 * cellSize, WHITE);
+    DrawLine(offset + 6 * cellSize, offset, offset + 6 * cellSize, offset + 6 * cellSize, WHITE);
+
+    // Middle square
+    DrawLine(offset + cellSize, offset + cellSize, offset + 5 * cellSize, offset + cellSize, WHITE);
+    DrawLine(offset + cellSize, offset + 5 * cellSize, offset + 5 * cellSize, offset + 5 * cellSize, WHITE);
+    DrawLine(offset + cellSize, offset + cellSize, offset + cellSize, offset + 5 * cellSize,WHITE);
+    DrawLine(offset + 5 * cellSize, offset + cellSize, offset + 5 * cellSize, offset + 5 * cellSize, WHITE);
+
+    // Inner square
+    DrawLine(offset + 2 * cellSize, offset + 2 * cellSize, offset + 4 * cellSize, offset + 2 * cellSize, WHITE);
+    DrawLine(offset + 2 * cellSize, offset + 4 * cellSize, offset + 4 * cellSize, offset + 4 * cellSize, WHITE);
+    DrawLine(offset + 2 * cellSize, offset + 2 * cellSize, offset + 2 * cellSize, offset + 4 * cellSize, WHITE);
+    DrawLine(offset + 4 * cellSize, offset + 2 * cellSize, offset + 4 * cellSize, offset + 4 * cellSize, WHITE);
+
+    // Cross connections
+    DrawLine(offset, offset + 3 * cellSize, offset + 2 * cellSize, offset + 3 * cellSize, WHITE);
+    DrawLine(offset + 4 * cellSize, offset + 3 * cellSize, offset + 6 * cellSize, offset + 3 * cellSize, WHITE);
+    DrawLine(offset + 3 * cellSize, offset, offset + 3 * cellSize, offset + 2 * cellSize, WHITE);
+    DrawLine(offset + 3 * cellSize, offset + 4 * cellSize, offset + 3 * cellSize, offset + 6 * cellSize, WHITE);
+
+    // Pieces
+    for (short row = 0; row < 7; row++)
+    {
+        for (short column = 0; column < 7; column++)
+        {
+            if (
+                (row == column && row != 3) ||
+                (row + column == 6 && row != 3) ||
+                (row == 3 && column != 3) ||
+                (row != 3 && column == 3))
+            {
+                int cellValue = board[row][column];
+
+                DrawCircle(
+                    column * cellSize + offset,
+                    row * cellSize + offset,
+                    cellSize / 4,
+                    colors[cellValue]);
+            }
+        }
+    }
 }
